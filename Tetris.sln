@@ -1,7 +1,7 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris", "Assembly-CSharp.csproj", "{D2BFFF02-D087-DB1A-C7FE-6538A965A290}"
+# Visual Studio 2008
+
+Project("{C34082D2-7001-82FD-2467-552F47995D29}") = "Tetris", "Assembly-CSharp.csproj", "{D2BFFF02-D087-DB1A-C7FE-6538A965A290}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
