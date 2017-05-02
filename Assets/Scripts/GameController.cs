@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 	private int[,] blocks;
 	private GameObject[,] blocksObj;
 	public GameObject blockPrefab;
+	public Sprite[] sprites;
 	public GameObject tetrominoObj;
 	private TetrominoController tetromino;
 	private bool hasPlaced;
@@ -60,12 +61,21 @@ public class GameController : MonoBehaviour {
 		else if (Input.GetKeyDown (KeyCode.S)) {
 			DropTetromino ();
 		}
+		else if (Input.GetKeyDown (KeyCode.N)) {
+			PrintArray ();
+		}
 
 		if (dropDelayCounter > 0) {
 			dropDelayCounter -= Time.deltaTime;
 		}
 		else {
 			DropTetromino ();
+		}
+	}
+
+	private void PrintArray () {
+		for (int i = 0; i < 20; i++) {
+			Debug.Log (blocks [i, 0] + " " + blocks [i, 1] + " " + blocks [i, 2] + " " + blocks [i, 3] + " " + blocks [i, 4] + " " + blocks [i, 5] + " " + blocks [i, 6] + " " + blocks [i, 7] + " " + blocks [i, 8] + " " + blocks [i, 9]);
 		}
 	}
 
@@ -209,7 +219,7 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("UpdateBlocks ()");
 		for (int i = 0; i < 4; i++) {
 			Debug.Log ("X: " + (x [i] + currentX));
-			blocks [y [i] + currentY, x [i] + currentX] = 1;
+			blocks [y [i] + currentY, x [i] + currentX] = tetromino.GetTetrominoID () + 1;
 		}
 		UpdateBlocksState ();
 	}
@@ -234,6 +244,7 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < blocksObj.GetLength (0); i++) {
 			for (int j = 0; j < blocksObj.GetLength (1); j++) {
 				blocksObj [i, j].SetActive (blocks [i, j] > 0);
+				blocksObj [i, j].GetComponent<SpriteRenderer>().sprite = sprites [blocks [i, j]];
 			}
 		}
 	}
