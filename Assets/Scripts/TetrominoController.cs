@@ -74,8 +74,8 @@ public class TetrominoController : MonoBehaviour {
 		return tetromino;
 	}
 
-	public string RandomTetromino () {
-		tetromino = Random.Range (0, 7);
+	public string RandomTetromino (int n) {
+		tetromino = n;
 		Debug.Log ("Tetromino: " + tetromino);
 		currentRotation = 1;
 		InitializeTetromino ();
