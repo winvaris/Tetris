@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TetrominoController : MonoBehaviour {
 
-	public GameObject blockPrefab;
 	private int tetromino;
 	private int currentRotation;
 	private string posStr;
@@ -12,11 +11,7 @@ public class TetrominoController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		tetromino = Random.Range (0, 7);
-		Debug.Log ("Tetromino: " + tetromino);
-		currentRotation = 1;
-		posStr = "";
-		InitializeTetromino ();
+		
 	}
 	
 	// Update is called once per frame
@@ -71,12 +66,20 @@ public class TetrominoController : MonoBehaviour {
 		SetPosStr ();
 	}
 
+	public string RandomTetromino () {
+		tetromino = Random.Range (0, 7);
+		Debug.Log ("Tetromino: " + tetromino);
+		currentRotation = 1;
+		InitializeTetromino ();
+		return posStr;
+	}
+
 	// Rotate the pieces
-	public void RotateTetromino () {
+	public string RotateTetromino () {
 
 		// O Piece Rotation
 		if (tetromino == 3) {
-			return;
+			return posStr;
 		}
 
 		// I, S, Z Pieces Rotation
@@ -113,6 +116,7 @@ public class TetrominoController : MonoBehaviour {
 			}
 		}
 		SetPosStr ();
+		return posStr;
 	}
 
 	private void SetPosStr () {
@@ -125,13 +129,13 @@ public class TetrominoController : MonoBehaviour {
 	private void RotateI () {
 		if (currentRotation == 1) {
 			x1 = 0;
-			y1 = 1;
+			y1 = 2;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 0;
-			y3 = -1;
+			y3 = 0;
 			x4 = 0;
-			y4 = -2;
+			y4 = -1;
 		}
 		else if (currentRotation == 2) {
 			x1 = -1;
