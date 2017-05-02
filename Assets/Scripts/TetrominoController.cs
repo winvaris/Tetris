@@ -74,8 +74,53 @@ public class TetrominoController : MonoBehaviour {
 		return posStr;
 	}
 
+	public string RotateTetrominoCounterClockwise () {
+		
+		// O Piece Rotation
+		if (tetromino == 3) {
+			return posStr;
+		}
+
+		// I, S, Z Pieces Rotation
+		else if (tetromino == 0 || tetromino == 4 || tetromino == 6) {
+			currentRotation--;
+			if (currentRotation <= 0) {
+				currentRotation = 2;
+			}
+			if (tetromino == 0) {
+				RotateI ();
+			}
+			else if (tetromino == 4) {
+				RotateS ();
+			}
+			else if (tetromino == 6) {
+				RotateZ ();
+			}
+		}
+
+		// J, L T Pieces Rotation
+		else if (tetromino == 1 || tetromino == 2 || tetromino == 5) {
+			currentRotation--;
+			if (currentRotation <= 0) {
+				currentRotation = 4;
+			}
+			if (tetromino == 1) {
+				RotateJ ();
+			}
+			else if (tetromino == 2) {
+				RotateL ();
+			}
+			else if (tetromino == 5) {
+				RotateT ();
+			}
+		}
+		SetPosStr ();
+		Debug.Log (posStr);
+		return posStr;
+	}
+
 	// Rotate the pieces
-	public string RotateTetromino () {
+	public string RotateTetrominoClockwise () {
 
 		// O Piece Rotation
 		if (tetromino == 3) {
@@ -116,6 +161,7 @@ public class TetrominoController : MonoBehaviour {
 			}
 		}
 		SetPosStr ();
+		Debug.Log (posStr);
 		return posStr;
 	}
 
@@ -125,17 +171,17 @@ public class TetrominoController : MonoBehaviour {
 
 	/// <Rotation Algorithms> ------------------------------------------------------------------------------------------------------
 
-	// Do I rotation (clockwise)
+	// Do I rotation
 	private void RotateI () {
 		if (currentRotation == 1) {
 			x1 = 0;
-			y1 = 2;
+			y1 = 3;
 			x2 = 0;
-			y2 = 1;
+			y2 = 2;
 			x3 = 0;
-			y3 = 0;
+			y3 = 1;
 			x4 = 0;
-			y4 = -1;
+			y4 = 0;
 		}
 		else if (currentRotation == 2) {
 			x1 = -1;
@@ -149,7 +195,7 @@ public class TetrominoController : MonoBehaviour {
 		}
 	}
 
-	// Do J rotation (clockwise)
+	// Do J rotation
 	private void RotateJ () {
 		if (currentRotation == 1) {
 			x1 = 0;
@@ -193,7 +239,7 @@ public class TetrominoController : MonoBehaviour {
 		}
 	}
 
-	// Do L rotation (clockwise)
+	// Do L rotation
 	private void RotateL () {
 		if (currentRotation == 1) {
 			x1 = 0;
@@ -249,31 +295,32 @@ public class TetrominoController : MonoBehaviour {
 		y4 = 0;
 	}
 
-	// Do S rotation (clockwise)
+	// Do S rotation
 	private void RotateS () {
 		if (currentRotation == 1) {
 			x1 = -1;
-			y1 = 1;
+			y1 = -1;
 			x2 = -1;
 			y2 = 0;
 			x3 = 0;
 			y3 = 0;
 			x4 = 0;
-			y4 = -1;
+			y4 = 1;
 		}
 		else if (currentRotation == 2) {
+			Debug.Log ("S 2");
 			x1 = 0;
-			y1 = 1;
+			y1 = -1;
 			x2 = 1;
-			y2 = 1;
+			y2 = -1;
 			x3 = -1;
 			y3 = 0;
 			x4 = 0;
-			y3 = 0;
+			y4 = 0;
 		}
 	}
 
-	// Do T rotation (clockwise)
+	// Do T rotation
 	private void RotateT () {
 		if (currentRotation == 1) {
 			x1 = 0;
@@ -286,14 +333,14 @@ public class TetrominoController : MonoBehaviour {
 			y4 = -1;
 		}
 		else if (currentRotation == 2) {
-			x1 = 0;
-			y1 = 1;
-			x2 = -1;
+			x1 = -1;
+			y1 = 0;
+			x2 = 0;
 			y2 = 0;
-			x3 = 0;
+			x3 = 1;
 			y3 = 0;
-			x4 = 1;
-			y4 = 0;
+			x4 = 0;
+			y4 = -1;
 		}
 		else if (currentRotation == 3) {
 			x1 = 0;
@@ -306,38 +353,38 @@ public class TetrominoController : MonoBehaviour {
 			y4 = -1;
 		}
 		else if (currentRotation == 4) {
-			x1 = -1;
-			y1 = 0;
-			x2 = 0;
-			y2 = 0;
-			x3 = 1;
-			y3 = 0;
-			x4 = 0;
-			y4 = -1;
-		}
-	}
-
-	// Do Z rotation (clockwise)
-	private void RotateZ () {
-		if (currentRotation == 1) {
-			x1 = 1;
+			x1 = 0;
 			y1 = 1;
-			x2 = 0;
+			x2 = -1;
 			y2 = 0;
-			x3 = 1;
-			y3 = 0;
-			x4 = 0;
-			y4 = -1;
-		}
-		else if (currentRotation == 2) {
-			x1 = -1;
-			y1 = 1;
-			x2 = 0;
-			y2 = 1;
 			x3 = 0;
 			y3 = 0;
 			x4 = 1;
+			y4 = 0;
+		}
+	}
+
+	// Do Z rotation
+	private void RotateZ () {
+		if (currentRotation == 1) {
+			x1 = 1;
+			y1 = -1;
+			x2 = 0;
+			y2 = 0;
+			x3 = 1;
 			y3 = 0;
+			x4 = 0;
+			y4 = 1;
+		}
+		else if (currentRotation == 2) {
+			x1 = -1;
+			y1 = -1;
+			x2 = 0;
+			y2 = -1;
+			x3 = 0;
+			y3 = 0;
+			x4 = 1;
+			y4 = 0;
 		}
 	}
 

@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
 		tetromino = tetrominoObj.GetComponent<TetrominoController> ();
 		hasPlaced = false;
 		gameRunning = false;
-		dropDelay = 1f;
+		dropDelay = 0.3f;
 		dropDelayCounter = dropDelay;
 		ResetCurrentPos ();
 		x = new int[4];
@@ -45,10 +45,24 @@ public class GameController : MonoBehaviour {
 			SetTetrominoPosArray (tetromino.RandomTetromino ());
 			UpdateBlocks ();
 		}
-		else if (Input.GetKeyDown (KeyCode.T)) {
+		else if (Input.GetKeyDown (KeyCode.W)) {
 			DeleteBlocks ();
-			SetTetrominoPosArray (tetromino.RotateTetromino ());
+			SetTetrominoPosArray (tetromino.RotateTetrominoClockwise ());
 			UpdateBlocks ();
+		}
+		else if (Input.GetKeyDown (KeyCode.A)) {
+			if (!ReachedLeft ()) {
+				DeleteBlocks ();
+				currentX--;
+				UpdateBlocks ();
+			}
+		}
+		else if (Input.GetKeyDown (KeyCode.D)) {
+			if (!ReachedRight ()) {
+				DeleteBlocks ();
+				currentX++;
+				UpdateBlocks ();
+			}
 		}
 		if (!gameRunning) {
 			return;
@@ -73,10 +87,57 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	private bool ReachedLeft () {
+		for (int i = 0; i < 4; i++) {
+			if (x [i] + currentX - 1 < 0 || (blocks [y [i] + currentY, x [i] + currentX - 1] != 0 && !IsMe (x [i] + currentX - 1, y [i] + currentY))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private bool ReachedRight () {
+		for (int i = 0; i < 4; i++) {
+			if (x [i] + currentX + 1 >= 10 || (blocks [y [i] + currentY, x [i] + currentX + 1] != 0 && !IsMe (x [i] + currentX + 1, y [i] + currentY))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void DropTetromino () {
-		DeleteBlocks ();
-		currentY++;
-		UpdateBlocks ();
+		if (!ReachedBottom ()) {
+			DeleteBlocks ();
+			currentY++;
+			UpdateBlocks ();
+		}
+		else {
+			SetTetrominoPosArray (tetromino.RandomTetromino ());
+			ResetCurrentPos ();
+		}
+	}
+
+	private bool IsMe (int checkX, int checkY) {
+		for (int i = 0; i < 4; i++) {
+			if (checkY == y [i] + currentY && checkX == x [i] + currentX) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private bool ReachedBottom () {
+		for (int i = 0; i < 4; i++) {
+			if (y [i] + currentY + 1 < 20) {
+				if (y [i] + currentY >= 20 || (blocks [y [i] + currentY + 1, x [i] + currentX] != 0 && !IsMe (x [i] + currentX, y [i] + currentY + 1))) {
+					return true;
+				}
+			}
+			else {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void DeleteBlocks () {
@@ -117,7 +178,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	private void ResetCurrentPos () {
-		currentX = 4;
+		currentX = 5;
 		currentY = 1;
 	}
 
