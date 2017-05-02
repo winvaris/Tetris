@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 65f18ae9ce22544b49e2b7cac28de25a
+timeCreated: 1493740636
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: AmerType Md BT
+  fontNames:
+  - AmerType Md BT
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
