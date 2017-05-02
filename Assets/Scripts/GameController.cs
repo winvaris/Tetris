@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
 		tetromino = tetrominoObj.GetComponent<TetrominoController> ();
 		hasPlaced = false;
 		gameRunning = false;
-		dropDelay = 0.3f;
+		dropDelay = 1f;
 		dropDelayCounter = dropDelay;
 		ResetCurrentPos ();
 		x = new int[4];
@@ -45,48 +45,87 @@ public class GameController : MonoBehaviour {
 			SetTetrominoPosArray (tetromino.RandomTetromino ());
 			UpdateBlocks ();
 		}
-		else if (Input.GetKeyDown (KeyCode.W)) {
-			DeleteBlocks ();
-			SetTetrominoPosArray (tetromino.RotateTetrominoClockwise ());
-			UpdateBlocks ();
-		}
-		else if (Input.GetKeyDown (KeyCode.A)) {
-			if (!ReachedLeft ()) {
-				DeleteBlocks ();
-				currentX--;
-				UpdateBlocks ();
-			}
-		}
-		else if (Input.GetKeyDown (KeyCode.D)) {
-			if (!ReachedRight ()) {
-				DeleteBlocks ();
-				currentX++;
-				UpdateBlocks ();
-			}
-		}
 		if (!gameRunning) {
 			return;
+		}
+		else if (Input.GetKeyDown (KeyCode.W)) {
+			RotateTetromino ();
+		}
+		else if (Input.GetKeyDown (KeyCode.A)) {
+			MoveLeft ();
+		}
+		else if (Input.GetKeyDown (KeyCode.D)) {
+			MoveRight ();
+		}
+		else if (Input.GetKeyDown (KeyCode.S)) {
+			DropTetromino ();
 		}
 
 		if (dropDelayCounter > 0) {
 			dropDelayCounter -= Time.deltaTime;
 		}
 		else {
-			// If the piece haven't reached the bottom
-			if (true) {
-
-			}
-
-			// If the piece have reached the bottom
-			else {
-
-			}
-
 			DropTetromino ();
-			dropDelayCounter = dropDelay;
 		}
 	}
 
+	// Move the tetromino to the left
+	private void MoveLeft () {
+		if (!ReachedLeft ()) {
+			DeleteBlocks ();
+			currentX--;
+			UpdateBlocks ();
+		}
+	}
+
+	// Move the tetromino to the right
+	private void MoveRight () {
+		if (!ReachedRight ()) {
+			DeleteBlocks ();
+			currentX++;
+			UpdateBlocks ();
+		}
+	}
+
+	// Drop the tetromino by 1 level
+	private void DropTetromino () {
+		if (!ReachedBottom ()) {
+			DeleteBlocks ();
+			currentY++;
+			UpdateBlocks ();
+		}
+		else {
+			CheckFullRows ();
+			SetTetrominoPosArray (tetromino.RandomTetromino ());
+			ResetCurrentPos ();
+		}
+		dropDelayCounter = dropDelay;
+	}
+
+	// Rotate the tetromino clockwise
+	private void RotateTetromino () {
+		if (tetromino.GetCurrentRotation () % 2 == 1) {
+			if (tetromino.GetTetrominoID () != 0) {
+				for (int i = 0; i < 4; i++) {
+					if (x [i] + currentX <= 0 || x [i] + currentX > 8) {
+						return;
+					}
+				}
+			}
+			else {
+				for (int i = 0; i < 4; i++) {
+					if (x [i] + currentX <= 0 || x [i] + currentX > 7) {
+						return;
+					}
+				}
+			}
+		}
+		DeleteBlocks ();
+		SetTetrominoPosArray (tetromino.RotateTetrominoClockwise ());
+		UpdateBlocks ();
+	}
+
+	// Check whether the tetromino has reached the left border
 	private bool ReachedLeft () {
 		for (int i = 0; i < 4; i++) {
 			if (x [i] + currentX - 1 < 0 || (blocks [y [i] + currentY, x [i] + currentX - 1] != 0 && !IsMe (x [i] + currentX - 1, y [i] + currentY))) {
@@ -96,6 +135,7 @@ public class GameController : MonoBehaviour {
 		return false;
 	}
 
+	// Check whether the tetromino has reached the right border
 	private bool ReachedRight () {
 		for (int i = 0; i < 4; i++) {
 			if (x [i] + currentX + 1 >= 10 || (blocks [y [i] + currentY, x [i] + currentX + 1] != 0 && !IsMe (x [i] + currentX + 1, y [i] + currentY))) {
@@ -105,27 +145,7 @@ public class GameController : MonoBehaviour {
 		return false;
 	}
 
-	private void DropTetromino () {
-		if (!ReachedBottom ()) {
-			DeleteBlocks ();
-			currentY++;
-			UpdateBlocks ();
-		}
-		else {
-			SetTetrominoPosArray (tetromino.RandomTetromino ());
-			ResetCurrentPos ();
-		}
-	}
-
-	private bool IsMe (int checkX, int checkY) {
-		for (int i = 0; i < 4; i++) {
-			if (checkY == y [i] + currentY && checkX == x [i] + currentX) {
-				return true;
-			}
-		}
-		return false;
-	}
-
+	// Check whether the tetromino has reached the bottom border or other tetromino
 	private bool ReachedBottom () {
 		for (int i = 0; i < 4; i++) {
 			if (y [i] + currentY + 1 < 20) {
@@ -140,6 +160,43 @@ public class GameController : MonoBehaviour {
 		return false;
 	}
 
+	// Check for collision between tetrominoes
+	private bool IsMe (int checkX, int checkY) {
+		for (int i = 0; i < 4; i++) {
+			if (checkY == y [i] + currentY && checkX == x [i] + currentX) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void CheckFullRows () {
+		for (int i = blocks.GetLength (0) - 1; i >= 0; i--) {
+			int count = 0;
+			for (int j = 0; j < blocks.GetLength (1); j++) {
+				Debug.Log ("i: " + i + ", j: " + j);
+				if (blocks [i, j] > 0) {
+					count++;
+				}
+			}
+			if (count >= 10) {
+				ClearRow (i);
+				i++;
+			}
+		}
+		UpdateBlocksState ();
+	}
+
+	private void ClearRow (int n) {
+		Debug.Log (n);
+		for (int i = n; i > 0; i--) {
+			for (int j = 0; j < blocks.GetLength (1); j++) {
+				blocks [i, j] = blocks [i - 1, j];
+			}
+		}
+	}
+
+	// Delete the previous tetromino before moving
 	private void DeleteBlocks () {
 		Debug.Log ("DeleteBlocks ()");
 		for (int i = 0; i < 4; i++) {
@@ -147,14 +204,17 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// Create the next tetromino after moving
 	private void UpdateBlocks () {
 		Debug.Log ("UpdateBlocks ()");
 		for (int i = 0; i < 4; i++) {
+			Debug.Log ("X: " + (x [i] + currentX));
 			blocks [y [i] + currentY, x [i] + currentX] = 1;
 		}
 		UpdateBlocksState ();
 	}
 
+	// Set the positions of the tetromino blocks
 	private void SetTetrominoPosArray (string str) {
 		Debug.Log ("SetTetrominoPosArray ()");
 		string[] temp = str.Split (' ');
@@ -168,6 +228,7 @@ public class GameController : MonoBehaviour {
 		y [3] = int.Parse (temp [7]);
 	}
 
+	// Set the UI of the blocks in the game
 	private void UpdateBlocksState () {
 		Debug.Log ("UpdateBlocksState ()");
 		for (int i = 0; i < blocksObj.GetLength (0); i++) {
@@ -177,11 +238,13 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// Reset the position for the next tetromino
 	private void ResetCurrentPos () {
 		currentX = 5;
 		currentY = 1;
 	}
 
+	// Initialize all the blocks in the game and deactivate it
 	private void InitializeBlocksObj () {
 		blocksObj = new GameObject[blocks.GetLength (0), blocks.GetLength (1)];
 		Debug.Log (blocksObj.GetLength (0));

@@ -66,6 +66,14 @@ public class TetrominoController : MonoBehaviour {
 		SetPosStr ();
 	}
 
+	public int GetCurrentRotation () {
+		return currentRotation;
+	}
+
+	public int GetTetrominoID () {
+		return tetromino;
+	}
+
 	public string RandomTetromino () {
 		tetromino = Random.Range (0, 7);
 		Debug.Log ("Tetromino: " + tetromino);
