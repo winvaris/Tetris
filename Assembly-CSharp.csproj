@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ButtonEvent.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
+     <Compile Include="Assets\Scripts\HoldTetromino.cs" />
      <Compile Include="Assets\Scripts\NextTetrominos.cs" />
      <Compile Include="Assets\Scripts\TetrominoController.cs" />
  <Reference Include="UnityEngine.UI">
