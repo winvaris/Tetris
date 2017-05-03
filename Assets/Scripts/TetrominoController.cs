@@ -9,16 +9,6 @@ public class TetrominoController : MonoBehaviour {
 	private string posStr;
 	private int x1, y1, x2, y2, x3, y3, x4, y4;
 
-	// Use this for initialization
-	void Awake () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	// Initialize Tetromino
 	private void InitializeTetromino () {
 

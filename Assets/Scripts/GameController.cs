@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
 	public Sprite[] sprites;
 	public GameObject tetrominoObj;
 	private TetrominoController tetromino;
+	public GameObject queueObj;
+	private NextTetrominos queue;
 	private bool hasPlaced;
 	private bool gameRunning;
 	private float dropDelay;
@@ -20,12 +22,13 @@ public class GameController : MonoBehaviour {
 	private int[] y;
 	private float startX;
 	private float startY;
-	private int[] randomedTetrominoes;
+	private int[] randomedTetrominos;
 
 	// Use this for initialization
 	void Awake () {
 		blocks = new int [20, 10];
 		tetromino = tetrominoObj.GetComponent<TetrominoController> ();
+		queue = queueObj.GetComponent<NextTetrominos> ();
 		hasPlaced = false;
 		gameRunning = false;
 		dropDelay = 1f;
@@ -37,18 +40,15 @@ public class GameController : MonoBehaviour {
 		startY = 4.005f;
 		InitializeBlocksObj ();
 		UpdateBlocksState ();
-		randomedTetrominoes = new int[4];
-		RandomTetrominoes ();
+		randomedTetrominos = new int[4];
+		RandomTetrominos ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
-			gameRunning = true;
 			Debug.Log ("Y Pressed");
-			SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominoes [0]));
-			RandomNextTetromino ();
-			UpdateBlocks ();
+			StartGame ();
 		}
 		if (!gameRunning) {
 			return;
@@ -72,9 +72,9 @@ public class GameController : MonoBehaviour {
 			PrintArray ();
 		}
 		else if (Input.GetKeyDown (KeyCode.M)) {
-			Debug.Log ("Randomed Tetrominoes");
+			Debug.Log ("Randomed Tetrominos");
 			for (int i = 0; i < 4; i++) {
-				Debug.Log (randomedTetrominoes [i]);
+				Debug.Log (randomedTetrominos [i]);
 			}
 		}
 
@@ -86,13 +86,22 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// Start the game
+	public void StartGame () {
+		gameRunning = true;
+		SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominos [0]));
+		RandomNextTetromino ();
+		UpdateBlocks ();
+		queue.SetQueueTetrominos (randomedTetrominos);
+	}
+
 	// Initialize random tetrominoes
-	private void RandomTetrominoes () {
-		randomedTetrominoes [0] = Random.Range (0, 7);
-		for (int i = 1; i < randomedTetrominoes.GetLength (0); i++) {
-			randomedTetrominoes [i] = Random.Range (0, 7);
-			while (randomedTetrominoes [i] == randomedTetrominoes [i - 1]) {
-				randomedTetrominoes [i] = Random.Range (0, 7);
+	private void RandomTetrominos () {
+		randomedTetrominos [0] = Random.Range (0, 7);
+		for (int i = 1; i < randomedTetrominos.GetLength (0); i++) {
+			randomedTetrominos [i] = Random.Range (0, 7);
+			while (randomedTetrominos [i] == randomedTetrominos [i - 1]) {
+				randomedTetrominos [i] = Random.Range (0, 7);
 			}
 		}
 	}
@@ -100,13 +109,13 @@ public class GameController : MonoBehaviour {
 	// Random next tetromino
 	private void RandomNextTetromino () {
 		int temp = Random.Range (0, 7);
-		while (temp == randomedTetrominoes [3]) {
+		while (temp == randomedTetrominos [3]) {
 			temp = Random.Range (0, 7);
 		}
-		randomedTetrominoes [0] = randomedTetrominoes [1];
-		randomedTetrominoes [1] = randomedTetrominoes [2];
-		randomedTetrominoes [2] = randomedTetrominoes [3];
-		randomedTetrominoes [3] = temp;
+		randomedTetrominos [0] = randomedTetrominos [1];
+		randomedTetrominos [1] = randomedTetrominos [2];
+		randomedTetrominos [2] = randomedTetrominos [3];
+		randomedTetrominos [3] = temp;
 	}
 
 	// Print out the array
@@ -148,14 +157,16 @@ public class GameController : MonoBehaviour {
 			DeleteBlocks ();
 			currentY++;
 			UpdateBlocks ();
+			dropDelayCounter = dropDelay;
 		}
 		else {
 			CheckFullRows ();
-			SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominoes [0]));
+			SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominos [0]));
 			RandomNextTetromino ();
+			queue.SetQueueTetrominos (randomedTetrominos);
 			ResetCurrentPos ();
+			dropDelayCounter = 0f;
 		}
-		dropDelayCounter = dropDelay;
 	}
 
 	// Rotate the tetromino clockwise
