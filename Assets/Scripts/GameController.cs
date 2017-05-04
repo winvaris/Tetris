@@ -60,20 +60,23 @@ public class GameController : MonoBehaviour {
 			Debug.Log ("Y Pressed");
 			StartGame ();
 		}
+		else if (Input.GetKeyDown (KeyCode.R)) {
+			ResetBlocks ();
+		}
 		if (!gameRunning) {
 			return;
 		}
-		else if (Input.GetKeyDown (KeyCode.W)) {
+		else if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			RotateTetromino ();
 		}
-		else if (Input.GetKeyDown (KeyCode.A)) {
+		else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			MoveLeft ();
 		}
-		else if (Input.GetKeyDown (KeyCode.D)) {
+		else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			MoveRight ();
 		}
-		else if (Input.GetKey (KeyCode.S)) {
-			dropDelayCounter -= Time.deltaTime * 15;
+		else if (Input.GetKey (KeyCode.DownArrow)) {
+			dropDelayCounter -= Time.deltaTime * 18;
 		}
 		else if (Input.GetKeyDown (KeyCode.Space)) {
 			PushToBottom ();
@@ -215,6 +218,11 @@ public class GameController : MonoBehaviour {
 		RandomNextTetromino ();
 		queue.SetQueueTetrominos (randomedTetrominos);
 		ResetCurrentPos ();
+		if (GameOver ()) {
+			Debug.Log ("Game Over");
+			gameRunning = false;
+			BlackOut ();
+		}
 		dropDelayCounter = 0f;
 		justSpanwed = true;
 	}
@@ -244,6 +252,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// Check whether the tetromino can rotate or not
 	private bool CanRotate () {
 		string tempStr = tetromino.RotateTetrominoClockwise ();
 		tetromino.RotateTetrominoCounterClockwise ();
@@ -264,6 +273,16 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		return true;
+	}
+
+	// Check whether the game is over or not
+	private bool GameOver () {
+		for (int i = 0; i < 4; i++) {
+			if (blocks [y [i] + currentY, x [i] + currentX] != 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// Check whether the tetromino has reached the left border
@@ -385,6 +404,26 @@ public class GameController : MonoBehaviour {
 	private void ResetCurrentPos () {
 		currentX = 4;
 		currentY = 0;
+	}
+
+	// Black out all the blocks for game over
+	private void BlackOut () {
+		for (int i = 0; i < blocksObj.GetLength (0); i++) {
+			for (int j = 0; j < blocksObj.GetLength (1); j++) {
+				blocksObj [i, j].SetActive (true);
+				blocksObj [i, j].GetComponent<SpriteRenderer>().sprite = sprites [0];
+			}
+		}
+	}
+
+	// Reset all the blocks to 0
+	private void ResetBlocks () {
+		for (int i = 0; i < blocksObj.GetLength (0); i++) {
+			for (int j = 0; j < blocksObj.GetLength (1); j++) {
+				blocksObj [i, j].SetActive (false);
+				blocks [i, j] = 0;
+			}
+		}
 	}
 
 	// Initialize all the blocks in the game and deactivate it
