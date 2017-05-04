@@ -173,67 +173,67 @@ public class TetrominoController : MonoBehaviour {
 	private void RotateI () {
 		if (currentRotation == 1) {
 			x1 = 0;
-			y1 = 3;
+			y1 = 0;
 			x2 = 0;
-			y2 = 2;
+			y2 = 1;
 			x3 = 0;
-			y3 = 1;
+			y3 = 2;
 			x4 = 0;
-			y4 = 0;
+			y4 = 3;
 		}
 		else if (currentRotation == 2) {
 			x1 = -1;
-			y1 = 0;
+			y1 = 1;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 1;
-			y3 = 0;
+			y3 = 1;
 			x4 = 2;
-			y4 = 0;
+			y4 = 1;
 		}
 	}
 
 	// Do J rotation
 	private void RotateJ () {
 		if (currentRotation == 1) {
-			x1 = 0;
-			y1 = 1;
-			x2 = 0;
-			y2 = 0;
-			x3 = -1;
-			y3 = -1;
-			x4 = 0;
-			y4 = -1;
-		}
-		else if (currentRotation == 2) {
-			x1 = -1;
-			y1 = 1;
-			x2 = -1;
-			y2 = 0;
-			x3 = 0;
-			y3 = 0;
-			x4 = 1;
-			y4 = 0;
-		}
-		else if (currentRotation == 3) {
-			x1 = 0;
-			y1 = 1;
+			x1 = 1;
+			y1 = 0;
 			x2 = 1;
 			y2 = 1;
 			x3 = 0;
-			y3 = 0;
-			x4 = 0;
-			y4 = -1;
+			y3 = 2;
+			x4 = 1;
+			y4 = 2;
 		}
-		else if (currentRotation == 4) {
-			x1 = -1;
+		else if (currentRotation == 2) {
+			x1 = 0;
 			y1 = 0;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 1;
+			y3 = 1;
+			x4 = 2;
+			y4 = 1;
+		}
+		else if (currentRotation == 3) {
+			x1 = 0;
+			y1 = 0;
+			x2 = 1;
+			y2 = 0;
+			x3 = 0;
+			y3 = 1;
+			x4 = 0;
+			y4 = 2;
+		}
+		else if (currentRotation == 4) {
+			x1 = 0;
+			y1 = 0;
+			x2 = 1;
+			y2 = 0;
+			x3 = 2;
 			y3 = 0;
-			x4 = 1;
-			y4 = -1;
+			x4 = 2;
+			y4 = 1;
 		}
 	}
 
@@ -241,124 +241,123 @@ public class TetrominoController : MonoBehaviour {
 	private void RotateL () {
 		if (currentRotation == 1) {
 			x1 = 0;
-			y1 = 1;
-			x2 = 0;
-			y2 = 0;
-			x3 = 0;
-			y3 = -1;
-			x4 = 1;
-			y4 = -1;
-		}
-		else if (currentRotation == 2) {
-			x1 = -1;
 			y1 = 0;
-			x2 = 0;
-			y2 = 0;
-			x3 = 1;
-			y3 = 0;
-			x4 = -1;
-			y4 = -1;
-		}
-		else if (currentRotation == 3) {
-			x1 = -1;
-			y1 = 1;
 			x2 = 0;
 			y2 = 1;
 			x3 = 0;
+			y3 = 2;
+			x4 = 1;
+			y4 = 2;
+		}
+		else if (currentRotation == 2) {
+			x1 = 0;
+			y1 = 0;
+			x2 = 1;
+			y2 = 0;
+			x3 = 2;
 			y3 = 0;
 			x4 = 0;
-			y4 = -1;
+			y4 = 1;
+		}
+		else if (currentRotation == 3) {
+			x1 = 0;
+			y1 = 0;
+			x2 = 1;
+			y2 = 0;
+			x3 = 1;
+			y3 = 1;
+			x4 = 1;
+			y4 = 2;
 		}
 		else if (currentRotation == 4) {
-			x1 = 1;
-			y1 = 1;
-			x2 = -1;
-			y2 = 0;
-			x3 = 0;
-			y3 = 0;
-			x4 = 1;
-			y4 = 0;
+			x1 = 2;
+			y1 = 0;
+			x2 = 0;
+			y2 = 1;
+			x3 = 1;
+			y3 = 1;
+			x4 = 2;
+			y4 = 1;
 		}
 	}
 
 	// Do O rotation (for what?)
 	private void RotateO () {
-		x1 = -1;
-		y1 = 1;
-		x2 = 0;
-		y2 = 1;
-		x3 = -1;
-		y3 = 0;
-		x4 = 0;
-		y4 = 0;
+		x1 = 0;
+		y1 = 0;
+		x2 = 1;
+		y2 = 0;
+		x3 = 0;
+		y3 = 1;
+		x4 = 1;
+		y4 = 1;
 	}
 
 	// Do S rotation
 	private void RotateS () {
 		if (currentRotation == 1) {
-			x1 = -1;
-			y1 = -1;
-			x2 = -1;
-			y2 = 0;
-			x3 = 0;
-			y3 = 0;
-			x4 = 0;
-			y4 = 1;
+			x1 = 0;
+			y1 = 0;
+			x2 = 0;
+			y2 = 1;
+			x3 = 1;
+			y3 = 1;
+			x4 = 1;
+			y4 = 2;
 		}
 		else if (currentRotation == 2) {
-			Debug.Log ("S 2");
-			x1 = 0;
-			y1 = -1;
-			x2 = 1;
-			y2 = -1;
-			x3 = -1;
-			y3 = 0;
-			x4 = 0;
-			y4 = 0;
+			x1 = 1;
+			y1 = 0;
+			x2 = 2;
+			y2 = 0;
+			x3 = 0;
+			y3 = 1;
+			x4 = 1;
+			y4 = 1;
 		}
 	}
 
 	// Do T rotation
 	private void RotateT () {
 		if (currentRotation == 1) {
-			x1 = 0;
-			y1 = 1;
-			x2 = -1;
-			y2 = 0;
-			x3 = 0;
-			y3 = 0;
-			x4 = 0;
-			y4 = -1;
-		}
-		else if (currentRotation == 2) {
-			x1 = -1;
+			x1 = 1;
 			y1 = 0;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 1;
-			y3 = 0;
-			x4 = 0;
-			y4 = -1;
+			y3 = 1;
+			x4 = 1;
+			y4 = 2;
+		}
+		else if (currentRotation == 2) {
+			x1 = 1;
+			y1 = 0;
+			x2 = 0;
+			y2 = 1;
+			x3 = 1;
+			y3 = 1;
+			x4 = 2;
+			y4 = 1;
 		}
 		else if (currentRotation == 3) {
 			x1 = 0;
-			y1 = 1;
+			y1 = 0;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 1;
-			y3 = 0;
+			y3 = 1;
 			x4 = 0;
-			y4 = -1;
+			y4 = 2;
 		}
 		else if (currentRotation == 4) {
 			x1 = 0;
-			y1 = 1;
-			x2 = -1;
+			y1 = 0;
+			x2 = 1;
 			y2 = 0;
-			x3 = 0;
+			x3 = 2;
 			y3 = 0;
 			x4 = 1;
-			y4 = 0;
+			y4 = 1;
 		}
 	}
 
@@ -366,23 +365,23 @@ public class TetrominoController : MonoBehaviour {
 	private void RotateZ () {
 		if (currentRotation == 1) {
 			x1 = 1;
-			y1 = -1;
+			y1 = 0;
 			x2 = 0;
-			y2 = 0;
+			y2 = 1;
 			x3 = 1;
-			y3 = 0;
+			y3 = 1;
 			x4 = 0;
-			y4 = 1;
+			y4 = 2;
 		}
 		else if (currentRotation == 2) {
-			x1 = -1;
-			y1 = -1;
-			x2 = 0;
-			y2 = -1;
-			x3 = 0;
-			y3 = 0;
-			x4 = 1;
-			y4 = 0;
+			x1 = 0;
+			y1 = 0;
+			x2 = 1;
+			y2 = 0;
+			x3 = 1;
+			y3 = 1;
+			x4 = 2;
+			y4 = 1;
 		}
 	}
 

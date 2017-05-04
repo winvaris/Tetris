@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour {
 	private float startY;
 	private int[] randomedTetrominos;
 	private int holdTetromino;
+	private bool holdUsed;
+	private bool pushUsed;
 
 	// Use this for initialization
 	void Awake () {
@@ -48,6 +50,8 @@ public class GameController : MonoBehaviour {
 		UpdateBlocksState ();
 		randomedTetrominos = new int[4];
 		RandomTetrominos ();
+		holdUsed = false;
+		pushUsed = false;
 	}
 	
 	// Update is called once per frame
@@ -87,6 +91,7 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
+		// Time counter for tetromino to drop down
 		if (dropDelayCounter > 0) {
 			dropDelayCounter -= Time.deltaTime;
 		}
@@ -106,18 +111,21 @@ public class GameController : MonoBehaviour {
 
 	// Set hold tetromino
 	private void HoldTetromino () {
-		int temp = hold.GetHoldTetromino ();
-		holdTetromino = tetromino.GetTetrominoID ();
-		hold.SetHoldTetromino (holdTetromino);
-		DeleteBlocks ();
-		if (temp < 0) {
-			SpawnTetromino ();
-		}
-		else {
-			SetTetrominoPosArray (tetromino.RandomTetromino (temp));
-			ResetCurrentPos ();
-			dropDelayCounter = 0f;
-			justSpanwed = true;
+		if (!holdUsed) {
+			int temp = hold.GetHoldTetromino ();
+			holdTetromino = tetromino.GetTetrominoID ();
+			hold.SetHoldTetromino (holdTetromino);
+			DeleteBlocks ();
+			if (temp < 0) {
+				SpawnTetromino ();
+			}
+			else {
+				SetTetrominoPosArray (tetromino.RandomTetromino (temp));
+				ResetCurrentPos ();
+				dropDelayCounter = 0f;
+				justSpanwed = true;
+			}
+			holdUsed = true;
 		}
 	}
 
@@ -153,9 +161,13 @@ public class GameController : MonoBehaviour {
 
 	// Push the tetromino directly to the buttom
 	private void PushToBottom () {
-		while (!ReachedBottom ()) {
-			DropTetromino ();
-			dropDelayCounter = 0;
+		if (!pushUsed) {
+			while (!ReachedBottom ()) {
+				DropTetromino ();
+				dropDelayCounter = 0;
+			}
+			dropDelayCounter = 0.4f;
+			pushUsed = true;
 		}
 	}
 
@@ -192,7 +204,9 @@ public class GameController : MonoBehaviour {
 		else {
 			CheckFullRows ();
 			SpawnTetromino ();
+			holdUsed = false;
 		}
+		pushUsed = false;
 	}
 
 	// Spawn tetromino
@@ -207,25 +221,49 @@ public class GameController : MonoBehaviour {
 
 	// Rotate the tetromino clockwise
 	private void RotateTetromino () {
-		if (tetromino.GetCurrentRotation () % 2 == 1) {
-			if (tetromino.GetTetrominoID () != 0) {
-				for (int i = 0; i < 4; i++) {
-					if (x [i] + currentX <= 0 || x [i] + currentX > 8) {
-						return;
-					}
-				}
-			}
-			else {
-				for (int i = 0; i < 4; i++) {
-					if (x [i] + currentX <= 0 || x [i] + currentX > 7) {
-						return;
-					}
-				}
+//		if (tetromino.GetCurrentRotation () % 2 == 1) {
+//			if (tetromino.GetTetrominoID () != 0) {
+//				for (int i = 0; i < 4; i++) {
+//					if (x [i] + currentX <= 0 || x [i] + currentX > 8) {
+//						return;
+//					}
+//				}
+//			}
+//			else {
+//				for (int i = 0; i < 4; i++) {
+//					if (x [i] + currentX <= 0 || x [i] + currentX > 7) {
+//						return;
+//					}
+//				}
+//			}
+//		}
+		if (CanRotate ()) {
+			DeleteBlocks ();
+			SetTetrominoPosArray (tetromino.RotateTetrominoClockwise ());
+			UpdateBlocks ();
+		}
+	}
+
+	private bool CanRotate () {
+		string tempStr = tetromino.RotateTetrominoClockwise ();
+		tetromino.RotateTetrominoCounterClockwise ();
+		string[] arrStr = tempStr.Split (' ');
+		int[] tempPosX = new int [4];
+		int[] tempPosY = new int [4];
+		tempPosX [0] = int.Parse (arrStr [0]);
+		tempPosY [0] = int.Parse (arrStr [1]);
+		tempPosX [1] = int.Parse (arrStr [2]);
+		tempPosY [1] = int.Parse (arrStr [3]);
+		tempPosX [2] = int.Parse (arrStr [4]);
+		tempPosY [2] = int.Parse (arrStr [5]);
+		tempPosX [3] = int.Parse (arrStr [6]);
+		tempPosY [3] = int.Parse (arrStr [7]);
+		for (int i = 0; i < 4; i++) {
+			if (tempPosX [i] + currentX < 0 || tempPosX [i] + currentX > 9 || (blocks [tempPosY [i] + currentY, tempPosX [i] + currentX] != 0 && !IsMe (tempPosX [i] + currentX, tempPosY [i] + currentY))) {
+				return false;
 			}
 		}
-		DeleteBlocks ();
-		SetTetrominoPosArray (tetromino.RotateTetrominoClockwise ());
-		UpdateBlocks ();
+		return true;
 	}
 
 	// Check whether the tetromino has reached the left border
@@ -346,7 +384,7 @@ public class GameController : MonoBehaviour {
 	// Reset the position for the next tetromino
 	private void ResetCurrentPos () {
 		currentX = 4;
-		currentY = 1;
+		currentY = 0;
 	}
 
 	// Initialize all the blocks in the game and deactivate it
