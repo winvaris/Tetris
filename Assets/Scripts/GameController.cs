@@ -169,7 +169,7 @@ public class GameController : MonoBehaviour {
 				DropTetromino ();
 				dropDelayCounter = 0;
 			}
-			dropDelayCounter = 0.4f;
+			dropDelayCounter = 0.3f;
 			pushUsed = true;
 		}
 	}
