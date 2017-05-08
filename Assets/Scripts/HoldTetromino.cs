@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class HoldTetromino : MonoBehaviour {
+public class HoldTetromino : NetworkBehaviour {
 
 	private int holdTetromino;
 	private GameObject tetrominosObj;
@@ -22,7 +23,9 @@ public class HoldTetromino : MonoBehaviour {
 	public int SetHoldTetromino (int tetromino) {
 		int temp = holdTetromino;
 		holdTetromino = tetromino;
-		UpdateQueue ();
+		if (isLocalPlayer) {
+			UpdateQueue ();
+		}
 		return temp;
 	}
 

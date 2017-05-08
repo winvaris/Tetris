@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class GameController : MonoBehaviour {
+public class GameController : NetworkBehaviour {
 
 	private int[,] blocks;
 	private GameObject[,] blocksObj;
@@ -400,7 +401,8 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < blocksObj.GetLength (0); i++) {
 			for (int j = 0; j < blocksObj.GetLength (1); j++) {
 				blocksObj [i, j].SetActive (blocks [i, j] > 0);
-				blocksObj [i, j].GetComponent<SpriteRenderer>().sprite = sprites [blocks [i, j]];
+//				blocksObj [i, j].GetComponent<SpriteRenderer> ().sprite = sprites [blocks [i, j]];
+				blocksObj [i, j].GetComponent<BlockController> ().ChooseColor (blocks [i, j]);
 			}
 		}
 	}
@@ -416,7 +418,7 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < blocksObj.GetLength (0); i++) {
 			for (int j = 0; j < blocksObj.GetLength (1); j++) {
 				blocksObj [i, j].SetActive (true);
-				blocksObj [i, j].GetComponent<SpriteRenderer>().sprite = sprites [0];
+				blocksObj [i, j].GetComponent<BlockController> ().ChooseColor (0);
 			}
 		}
 	}

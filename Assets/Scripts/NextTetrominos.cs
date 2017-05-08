@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class NextTetrominos : MonoBehaviour {
+public class NextTetrominos : NetworkBehaviour {
 
 	private int[] queueTetrominos;
 	private GameObject[] tetrominosObj;
@@ -15,10 +16,12 @@ public class NextTetrominos : MonoBehaviour {
 
 	// Set the array of the queue
 	public void SetQueueTetrominos (int[] tetrominos) {
-		for (int i = 0; i < queueTetrominos.GetLength (0); i++) {
-			queueTetrominos [i] = tetrominos [i];
+		if (isLocalPlayer) {
+			for (int i = 0; i < queueTetrominos.GetLength (0); i++) {
+				queueTetrominos [i] = tetrominos [i];
+			}
+			UpdateQueue ();
 		}
-		UpdateQueue ();
 	}
 
 	// Update the queue object tetrominos
