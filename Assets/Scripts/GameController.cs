@@ -171,7 +171,7 @@ public class GameController : MonoBehaviour {
 				DropTetromino ();
 				dropDelayCounter = 0;
 			}
-			dropDelayCounter = 0.3f;
+			dropDelayCounter = 0f;
 			pushUsed = true;
 		}
 		audioPlayer = downSound.GetComponent<AudioSource> ();
