@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour {
 	private int holdTetromino;
 	private bool holdUsed;
 	private bool pushUsed;
+	public GameObject downSound;
+	private AudioSource audioPlayer;
 
 	// Use this for initialization
 	void Awake () {
@@ -172,6 +174,9 @@ public class GameController : MonoBehaviour {
 			dropDelayCounter = 0.3f;
 			pushUsed = true;
 		}
+		audioPlayer = downSound.GetComponent<AudioSource> ();
+		audioPlayer.Play ();
+
 	}
 
 	// Move the tetromino to the left
