@@ -17,7 +17,7 @@ public class GameController : NetworkBehaviour {
 	private HoldTetromino hold;
 	private bool justSpanwed;
 	private bool hasPlaced;
-	private bool gameRunning;
+	[SyncVar] private bool gameRunning;
 	private float dropDelay;
 	private float dropDelayCounter;
 	private int currentX;
@@ -63,7 +63,9 @@ public class GameController : NetworkBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
-			StartGame ();
+			CmdGameRunning (true);
+			//StartGame ();
+			Debug.Log ("Game Running: " + gameRunning);
 		}
 		else if (Input.GetKeyDown (KeyCode.R)) {
 			ResetBlocks ();
@@ -106,6 +108,11 @@ public class GameController : NetworkBehaviour {
 		else {
 			DropTetromino ();
 		}
+	}
+
+	[Command]
+	public void CmdGameRunning (bool value) {
+		gameRunning = value;
 	}
 
 	// Start the game
