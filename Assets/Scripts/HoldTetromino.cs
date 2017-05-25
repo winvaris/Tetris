@@ -23,7 +23,7 @@ public class HoldTetromino : NetworkBehaviour {
 	public int SetHoldTetromino (int tetromino) {
 		int temp = holdTetromino;
 		holdTetromino = tetromino;
-		if (isLocalPlayer) {
+		if (gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer) {
 			UpdateQueue ();
 		}
 		return temp;

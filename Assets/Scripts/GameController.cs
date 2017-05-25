@@ -32,6 +32,7 @@ public class GameController : NetworkBehaviour {
 	private bool pushUsed;
 	public GameObject downSound;
 	private AudioSource audioPlayer;
+	[SyncVar] public string networkBlocks;
 
 	// Use this for initialization
 	void Awake () {
@@ -39,6 +40,7 @@ public class GameController : NetworkBehaviour {
 		tetromino = tetrominoObj.GetComponent<TetrominoController> ();
 		queue = queueObj.GetComponent<NextTetrominos> ();
 		hold = holdObj.GetComponent<HoldTetromino> ();
+		networkBlocks = "";
 		justSpanwed = true;
 		hasPlaced = false;
 		gameRunning = false;
@@ -132,6 +134,29 @@ public class GameController : NetworkBehaviour {
 				justSpanwed = true;
 			}
 			holdUsed = true;
+		}
+	}
+
+	private void SetSyncStr () {
+		networkBlocks = "";
+		for (int i = 0; i < blocks.GetLength (0); i++) {
+			for (int j = 0; j < blocks.GetLength (1); j++) {
+				networkBlocks += blocks [i, j] + " ";
+			}
+		}
+	}
+
+	private void GetSyncStr () {
+		string[] syncArray = networkBlocks.Split (' ');
+		for (int i = 0; i < blocks.GetLength (0); i++) {
+			for (int j = 0; j < blocks.GetLength (1); j++) {
+				if (syncArray.Length > 1) {
+					blocks [i, j] = int.Parse (syncArray [(i * 10) + j]);
+				}
+				else {
+					blocks [i, j] = 0;
+				}
+			}
 		}
 	}
 
@@ -401,8 +426,8 @@ public class GameController : NetworkBehaviour {
 		for (int i = 0; i < blocksObj.GetLength (0); i++) {
 			for (int j = 0; j < blocksObj.GetLength (1); j++) {
 				blocksObj [i, j].SetActive (blocks [i, j] > 0);
-//				blocksObj [i, j].GetComponent<SpriteRenderer> ().sprite = sprites [blocks [i, j]];
-				blocksObj [i, j].GetComponent<BlockController> ().ChooseColor (blocks [i, j]);
+				blocksObj [i, j].GetComponent<SpriteRenderer> ().sprite = sprites [blocks [i, j]];
+//				blocksObj [i, j].GetComponent<BlockController> ().ChooseColor (blocks [i, j]);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ public class NextTetrominos : NetworkBehaviour {
 
 	// Set the array of the queue
 	public void SetQueueTetrominos (int[] tetrominos) {
-		if (isLocalPlayer) {
+		if (gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer) {
 			for (int i = 0; i < queueTetrominos.GetLength (0); i++) {
 				queueTetrominos [i] = tetrominos [i];
 			}
