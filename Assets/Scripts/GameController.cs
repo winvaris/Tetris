@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
+
 public class GameController : NetworkBehaviour {
 
 	private int[,] blocks;
@@ -30,9 +34,13 @@ public class GameController : NetworkBehaviour {
 	private int holdTetromino;
 	private bool holdUsed;
 	private bool pushUsed;
+	private DatabaseReference reference;
 	public GameObject downSound;
 	private AudioSource audioPlayer;
-	[SyncVar] public string networkBlocks;
+	public string networkBlocks;
+	private string myBlock;
+	private string myName = "";
+	private bool gameStart;
 
 	// Use this for initialization
 	void Awake () {
@@ -58,13 +66,48 @@ public class GameController : NetworkBehaviour {
 		holdUsed = false;
 		pushUsed = false;
 	}
-	
+
+	void Start() {
+		// Set up the Editor before calling into the realtime database.
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://tetris-a8118.firebaseio.com/");
+
+		// Get the root reference location of the database.
+		reference = FirebaseDatabase.DefaultInstance.RootReference;
+		if (myName == "") {
+			reference.GetValueAsync().ContinueWith(task => {
+				if (task.IsFaulted) {
+					// Handle the error...
+				}
+				else if (task.IsCompleted) {
+					DataSnapshot snapshot = task.Result;
+					if(snapshot.HasChild("p1")){
+						myName = "p2";
+					}else {
+						myName = "p1";
+					}
+				}
+			});	
+//			reference.ValueChanged += (object sender, ValueChangedEventArgs args) => {
+//				if (args.DatabaseError != null) {
+//					Debug.LogError (args.DatabaseError.Message);
+//					return;
+//				}
+//				// Do something with the data in args.Snapshot
+//				if (args.Snapshot.HasChild ("p1")) {
+//					myName = "p2";
+//				} else {
+//					myName = "p1";
+//				}
+//			};
+		} 
+	}
+		
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
-			CmdGameRunning (true);
-			//StartGame ();
+//			CmdGameRunning (true);
+			StartGame ();
 			Debug.Log ("Game Running: " + gameRunning);
 		}
 		else if (Input.GetKeyDown (KeyCode.R)) {
@@ -73,31 +116,33 @@ public class GameController : NetworkBehaviour {
 		if (!gameRunning) {
 			return;
 		}
-		else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			RotateTetromino ();
-		}
-		else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			MoveLeft ();
-		}
-		else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			MoveRight ();
-		}
-		else if (Input.GetKey (KeyCode.DownArrow)) {
-			dropDelayCounter -= Time.deltaTime * 18;
-		}
-		else if (Input.GetKeyDown (KeyCode.Space)) {
-			PushToBottom ();
-		}
-		else if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			HoldTetromino ();
-		}
-		else if (Input.GetKeyDown (KeyCode.N)) {
-			PrintArray ();
-		}
-		else if (Input.GetKeyDown (KeyCode.M)) {
-			Debug.Log ("Randomed Tetrominos");
-			for (int i = 0; i < 4; i++) {
-				Debug.Log (randomedTetrominos [i]);
+		if (isLocalPlayer) {
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				RotateTetromino ();
+			}
+			else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				MoveLeft ();
+			}
+			else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				MoveRight ();
+			}
+			else if (Input.GetKey (KeyCode.DownArrow)) {
+				dropDelayCounter -= Time.deltaTime * 18;
+			}
+			else if (Input.GetKeyDown (KeyCode.Space)) {
+				PushToBottom ();
+			}
+			else if (Input.GetKeyDown (KeyCode.LeftShift)) {
+				HoldTetromino ();
+			}
+			else if (Input.GetKeyDown (KeyCode.N)) {
+				PrintArray ();
+			}
+			else if (Input.GetKeyDown (KeyCode.M)) {
+				Debug.Log ("Randomed Tetrominos");
+				for (int i = 0; i < 4; i++) {
+					Debug.Log (randomedTetrominos [i]);
+				}
 			}
 		}
 
@@ -106,7 +151,12 @@ public class GameController : NetworkBehaviour {
 			dropDelayCounter -= Time.deltaTime;
 		}
 		else {
-			DropTetromino ();
+			if (isLocalPlayer) {
+				DropTetromino ();
+			}
+			else {
+				GetSyncStr ();
+			}
 		}
 	}
 
@@ -146,14 +196,39 @@ public class GameController : NetworkBehaviour {
 
 	private void SetSyncStr () {
 		networkBlocks = "";
+		myBlock = "";
 		for (int i = 0; i < blocks.GetLength (0); i++) {
 			for (int j = 0; j < blocks.GetLength (1); j++) {
 				networkBlocks += blocks [i, j] + " ";
+				myBlock += blocks [i, j] + " ";
 			}
 		}
 	}
 
 	private void GetSyncStr () {
+		if (myName == "p1") {
+			reference.Child("p2").Child("block").GetValueAsync().ContinueWith(task => {
+	            if (task.IsFaulted) {
+	                    // Handle the error...
+	            }
+	        	else if (task.IsCompleted) {
+	                DataSnapshot snapshot = task.Result;
+					networkBlocks = snapshot.Value.ToString();
+	            }
+	   		});	
+		} 
+		else {
+			reference.Child("p1").Child("block").GetValueAsync().ContinueWith(task => {
+				if (task.IsFaulted) {
+					// Handle the error...
+				}
+				else if (task.IsCompleted) {
+					DataSnapshot snapshot = task.Result;
+					networkBlocks = snapshot.Value.ToString();
+				}
+			});	
+		}
+
 		string[] syncArray = networkBlocks.Split (' ');
 		for (int i = 0; i < blocks.GetLength (0); i++) {
 			for (int j = 0; j < blocks.GetLength (1); j++) {
@@ -165,6 +240,7 @@ public class GameController : NetworkBehaviour {
 				}
 			}
 		}
+		UpdateBlocksState ();
 	}
 
 	// Initialize random tetrominoes
@@ -410,6 +486,9 @@ public class GameController : NetworkBehaviour {
 		for (int i = 0; i < 4; i++) {
 			blocks [y [i] + currentY, x [i] + currentX] = tetromino.GetTetrominoID () + 1;
 		}
+
+		SetSyncStr ();
+		reference.Child (myName).Child("block").SetValueAsync (networkBlocks);
 		UpdateBlocksState ();
 	}
 
