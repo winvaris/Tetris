@@ -53,6 +53,19 @@
      <Compile Include="Assets\Scripts\LocalCheckController.cs" />
      <Compile Include="Assets\Scripts\NextTetrominos.cs" />
      <Compile Include="Assets\Scripts\TetrominoController.cs" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v1.1.1_manifest.txt" />
+     <None Include="Assets\Firebase\Plugins\link.xml" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v1.0.0_manifest.txt" />
+     <None Include="Assets\Plugins\Android\Firebase\AndroidManifest.xml" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v1.0.1_manifest.txt" />
+     <None Include="Assets\PlayServicesResolver\proguard-messaging-workaround.txt" />
+     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v1.1.2_manifest.txt" />
+     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver_v1.2.21.0.txt" />
+     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
+     <None Include="Assets\PlayServicesResolver\proguard-unity.txt" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v1.1.0_manifest.txt" />
+     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_v3.0.3_manifest.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -73,6 +86,21 @@
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="Firebase.Analytics">
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="Firebase.App">
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.App.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.MiniJson">
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Google.MiniJson.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Compat">
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Unity.Compat.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Tasks">
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Unity.Tasks.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
