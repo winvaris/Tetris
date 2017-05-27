@@ -65,10 +65,7 @@ public class GameController : NetworkBehaviour {
 		RandomTetrominos ();
 		holdUsed = false;
 		pushUsed = false;
-	}
 
-	void Start() {
-		// Set up the Editor before calling into the realtime database.
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://tetris-a8118.firebaseio.com/");
 
 		// Get the root reference location of the database.
@@ -82,12 +79,21 @@ public class GameController : NetworkBehaviour {
 					DataSnapshot snapshot = task.Result;
 					if(snapshot.HasChild("p1")){
 						myName = "p2";
+						Debug.Log("my name : ");
+						Debug.Log(myName);
 					}else {
 						myName = "p1";
+						Debug.Log("my name : ");
+						Debug.Log(myName);
 					}
 				}
 			});	
 		} 
+	}
+
+	void Start() {
+		// Set up the Editor before calling into the realtime database.
+		
 	}
 		
 	// Update is called once per frame
@@ -100,8 +106,8 @@ public class GameController : NetworkBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
-			CmdGameRunning (true);
-			StartGame ();
+//			CmdGameRunning (true);
+//			StartGame ();
 			Debug.Log ("Game Running: " + gameRunning);
 		}
 		else if (Input.GetKeyDown (KeyCode.R)) {
@@ -155,6 +161,11 @@ public class GameController : NetworkBehaviour {
 				GetSyncStr ();
 			}
 		}
+	}
+
+	public void Ready(){
+		reference = FirebaseDatabase.DefaultInstance.RootReference;
+		reference.Child (myName).Child("ready").SetValueAsync ("1");
 	}
 
 	[Command]
