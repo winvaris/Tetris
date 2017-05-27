@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
 using Firebase;
@@ -42,6 +43,8 @@ public class GameController : MonoBehaviour {
 	private string myBlock = "";
 	private bool gameStart;
 	public GameObject enemyBoard;
+	public Text timeText;
+	private float time;
 
 	// Use this for initialization
 	void Awake () {
@@ -65,6 +68,7 @@ public class GameController : MonoBehaviour {
 		RandomTetrominos ();
 		holdUsed = false;
 		pushUsed = false;
+		time = 120f;
 
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://tetris-a8118.firebaseio.com/");
 
@@ -75,17 +79,6 @@ public class GameController : MonoBehaviour {
 	void Start() {
 		// Set up the Editor before calling into the realtime database.
 		
-	}
-
-	public void SetEnemy(string enemy){
-		myEnemy = enemy;
-		enemyBoard.gameObject.GetComponent<EnemyController> ().SetName(myEnemy);
-		StartGame ();
-	}
-
-	public void SetName(string name){
-		myName = name;
-		Ready ();
 	}
 		
 	// Update is called once per frame
@@ -102,6 +95,12 @@ public class GameController : MonoBehaviour {
 
 		if (!gameRunning) {
 			return;
+		}
+
+		if (time >= 0) {
+			Debug.Log (time);
+			time -= Time.deltaTime;
+			SetTime ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
@@ -141,7 +140,26 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	public void Ready(){
+	public void SetTime () {
+		int minute = Mathf.FloorToInt (time / 60);
+		Debug.Log (minute);
+		int second = Mathf.FloorToInt (time - (minute * 60));
+		Debug.Log (minute + ":" + second);
+		timeText.text = "" + minute + ":" + second;
+	}
+
+	public void SetEnemy (string enemy){
+		myEnemy = enemy;
+		enemyBoard.gameObject.GetComponent<EnemyController> ().SetName(myEnemy);
+		StartGame ();
+	}
+
+	public void SetName (string name){
+		myName = name;
+		Ready ();
+	}
+
+	public void Ready (){
 		reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child (myName).Child("ready").SetValueAsync ("1");
 	}
