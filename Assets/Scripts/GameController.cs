@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour {
 	public GameObject enemyBoard;
 	public Text timeText;
 	private float time;
+	private int score;
 
 	// Use this for initialization
 	void Awake () {
@@ -69,6 +70,7 @@ public class GameController : MonoBehaviour {
 		holdUsed = false;
 		pushUsed = false;
 		time = 120f;
+		score = 0;
 
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://tetris-a8118.firebaseio.com/");
 
@@ -98,7 +100,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (time >= 0) {
-			Debug.Log (time);
 			time -= Time.deltaTime;
 			SetTime ();
 		}
@@ -142,9 +143,7 @@ public class GameController : MonoBehaviour {
 
 	public void SetTime () {
 		int minute = Mathf.FloorToInt (time / 60);
-		Debug.Log (minute);
 		int second = Mathf.FloorToInt (time - (minute * 60));
-		Debug.Log (minute + ":" + second);
 		timeText.text = "" + minute + ":" + second;
 	}
 
@@ -418,6 +417,8 @@ public class GameController : MonoBehaviour {
 			if (count >= 10) {
 				ClearRow (i);
 				i++;
+				score++;
+				Debug.Log ("Score: " + score);
 			}
 		}
 		UpdateBlocksState ();
