@@ -116,6 +116,9 @@
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="Firebase.Editor">
+ <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Editor/Firebase.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Firebase.Analytics">
  <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
  </Reference>
@@ -142,6 +145,12 @@
  </Reference>
  <Reference Include="Unity.Tasks">
  <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Unity.Tasks.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.IOSResolver">
+ <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.JarResolver">
+ <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.JarResolver.dll</HintPath>
  </Reference>
  <Reference Include="Google.VersionHandler">
  <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
