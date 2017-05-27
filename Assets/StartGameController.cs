@@ -28,8 +28,8 @@ public class StartGameController : MonoBehaviour {
 				return;
 			}
 			if(args.Snapshot.HasChild(enemy)){
-				if(args.Snapshot.Child(enemy).Child("ready").Value.ToString() == "1"){
-					mainBoard.gameObject.GetComponentInParent<GameController> ().SetEnemy(enemy);
+				if(args.Snapshot.Child(enemy).Child("ready").Value.ToString() == "1" && args.Snapshot.Child(input.text.ToString()).Child("ready").Value.ToString()== "1"){
+					mainBoard.gameObject.GetComponent<GameController> ().SetEnemy(enemy);
 					canvas.SetActive(false);
 				}
 			}
@@ -42,6 +42,6 @@ public class StartGameController : MonoBehaviour {
 	}
 
 	public void Ready(){
-		mainBoard.gameObject.GetComponentInParent<GameController> ().SetName(input.text.ToString());
+		mainBoard.gameObject.GetComponent<GameController> ().SetName(input.text.ToString());
 	}
 }

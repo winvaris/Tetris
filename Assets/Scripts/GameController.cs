@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour {
 
 	public void SetEnemy(string enemy){
 		myEnemy = enemy;
-		enemyBoard.gameObject.GetComponentInParent<EnemyController> ().SetName(myEnemy);
+		enemyBoard.gameObject.GetComponent<EnemyController> ().SetName(myEnemy);
 		StartGame ();
 	}
 
@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
 //			CmdGameRunning (true);
-//			StartGame ();
+			StartGame ();
 			Debug.Log ("Game Running: " + gameRunning);
 		}
 
