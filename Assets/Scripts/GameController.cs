@@ -7,7 +7,7 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 
-public class GameController : NetworkBehaviour {
+public class GameController : MonoBehaviour {
 
 	private int[,] blocks;
 	private GameObject[,] blocksObj;
@@ -20,8 +20,7 @@ public class GameController : NetworkBehaviour {
 	public GameObject holdObj;
 	private HoldTetromino hold;
 	private bool justSpanwed;
-	private bool hasPlaced;
-	[SyncVar] private bool gameRunning;
+	private bool gameRunning;
 	private float dropDelay;
 	private float dropDelayCounter;
 	private int currentX;
@@ -38,9 +37,11 @@ public class GameController : NetworkBehaviour {
 	public GameObject downSound;
 	private AudioSource audioPlayer;
 	public string networkBlocks;
-	private string myBlock;
+	private string myEnemy = "";
 	private string myName = "";
+	private string myBlock = "";
 	private bool gameStart;
+	public GameObject enemyBoard;
 
 	// Use this for initialization
 	void Awake () {
@@ -50,7 +51,6 @@ public class GameController : NetworkBehaviour {
 		hold = holdObj.GetComponent<HoldTetromino> ();
 		networkBlocks = "";
 		justSpanwed = true;
-		hasPlaced = false;
 		gameRunning = false;
 		dropDelay = 1f;
 		dropDelayCounter = dropDelay;
@@ -70,81 +70,70 @@ public class GameController : NetworkBehaviour {
 
 		// Get the root reference location of the database.
 		reference = FirebaseDatabase.DefaultInstance.RootReference;
-		if (myName == "") {
-			reference.GetValueAsync().ContinueWith(task => {
-				if (task.IsFaulted) {
-					// Handle the error...
-				}
-				else if (task.IsCompleted) {
-					DataSnapshot snapshot = task.Result;
-					if(snapshot.HasChild("p1")){
-						myName = "p2";
-						Debug.Log("my name : ");
-						Debug.Log(myName);
-					}else {
-						myName = "p1";
-						Debug.Log("my name : ");
-						Debug.Log(myName);
-					}
-				}
-			});	
-		} 
 	}
 
 	void Start() {
 		// Set up the Editor before calling into the realtime database.
 		
 	}
+
+	public void SetEnemy(string enemy){
+		myEnemy = enemy;
+		enemyBoard.gameObject.GetComponentInParent<EnemyController> ().SetName(myEnemy);
+		StartGame ();
+	}
+
+	public void SetName(string name){
+		myName = name;
+		Ready ();
+	}
 		
 	// Update is called once per frame
 	void Update () {
-//		Debug.Log (myName + ":::");
-		if (isLocalPlayer) {
-			if (Input.GetKeyDown (KeyCode.O)) {
-				Debug.Log ("MyName: " + myName);
-			}
-		}
+
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
 //			CmdGameRunning (true);
 //			StartGame ();
 			Debug.Log ("Game Running: " + gameRunning);
 		}
+
 		else if (Input.GetKeyDown (KeyCode.R)) {
 			ResetBlocks ();
 		}
+
 		if (!gameRunning) {
 			return;
 		}
-		if (isLocalPlayer) {
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				RotateTetromino ();
-			}
-			else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-				MoveLeft ();
-			}
-			else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-				MoveRight ();
-			}
-			else if (Input.GetKey (KeyCode.DownArrow)) {
-				dropDelayCounter -= Time.deltaTime * 18;
-			}
-			else if (Input.GetKeyDown (KeyCode.Space)) {
-				PushToBottom ();
-			}
-			else if (Input.GetKeyDown (KeyCode.LeftShift)) {
-				HoldTetromino ();
-			}
-			else if (Input.GetKeyDown (KeyCode.N)) {
-				PrintArray ();
-			}
-			else if (Input.GetKeyDown (KeyCode.M)) {
-				Debug.Log ("Randomed Tetrominos");
-				for (int i = 0; i < 4; i++) {
-					Debug.Log (randomedTetrominos [i]);
-				}
+
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			RotateTetromino ();
+		}
+		else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			MoveLeft ();
+		}
+		else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			MoveRight ();
+		}
+		else if (Input.GetKey (KeyCode.DownArrow)) {
+			dropDelayCounter -= Time.deltaTime * 18;
+		}
+		else if (Input.GetKeyDown (KeyCode.Space)) {
+			PushToBottom ();
+		}
+		else if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			HoldTetromino ();
+		}
+		else if (Input.GetKeyDown (KeyCode.N)) {
+			PrintArray ();
+		}
+		else if (Input.GetKeyDown (KeyCode.M)) {
+			Debug.Log ("Randomed Tetrominos");
+			for (int i = 0; i < 4; i++) {
+				Debug.Log (randomedTetrominos [i]);
 			}
 		}
+
 
 		// Time counter for tetromino to drop down
 		if (dropDelayCounter > 0) {
@@ -152,14 +141,7 @@ public class GameController : NetworkBehaviour {
 //			Debug.Log (myName + ": " + dropDelayCounter);
 		}
 		else {
-			Debug.Log ("Time = 0");
-			if (isLocalPlayer) {
-				DropTetromino ();
-			}
-			else {
-				Debug.Log ("TTTTTTTT");
-				GetSyncStr ();
-			}
+			DropTetromino ();
 		}
 	}
 
@@ -167,8 +149,7 @@ public class GameController : NetworkBehaviour {
 		reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child (myName).Child("ready").SetValueAsync ("1");
 	}
-
-	[Command]
+		
 	public void CmdGameRunning (bool value) {
 		gameRunning = value;
 	}
@@ -179,6 +160,7 @@ public class GameController : NetworkBehaviour {
 		SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominos [0]));
 		RandomNextTetromino ();
 		UpdateBlocks ();
+		CmdGameRunning (true);
 		queue.SetQueueTetrominos (randomedTetrominos);
 	}
 

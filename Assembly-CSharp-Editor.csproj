@@ -113,47 +113,77 @@
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor.Android.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.AppleTV.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/AppleTVSupport/UnityEditor.AppleTV.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Tizen.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/TizenPlayer/UnityEditor.Tizen.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.SamsungTV.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/STVPlayer/UnityEditor.SamsungTV.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.WebGL.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+ <HintPath>/Applications/Unity/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Editor">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Editor/Firebase.Editor.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Editor/Firebase.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Analytics">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.App">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.App.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.App.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Auth">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.Auth.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.Auth.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Database">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.Database.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.Database.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Storage">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Firebase.Storage.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Firebase.Storage.dll</HintPath>
  </Reference>
  <Reference Include="Google.MiniJson">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Google.MiniJson.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Google.MiniJson.dll</HintPath>
  </Reference>
  <Reference Include="Google.Sharpen">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Google.Sharpen.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Google.Sharpen.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Compat">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Unity.Compat.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Unity.Compat.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Tasks">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/Firebase/Plugins/Unity.Tasks.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/Firebase/Plugins/Unity.Tasks.dll</HintPath>
  </Reference>
  <Reference Include="Google.IOSResolver">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
  </Reference>
  <Reference Include="Google.JarResolver">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.JarResolver.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/PlayServicesResolver/Editor/Google.JarResolver.dll</HintPath>
  </Reference>
  <Reference Include="Google.VersionHandler">
- <HintPath>/Users/winvaris/Desktop/Senior Project/Tetris/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+ <HintPath>/Users/MindaRyn/Documents/Game Dev/Tetris/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+ <HintPath>/Applications/Unity/PlaybackEngines/AppleTVSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions.Common">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
