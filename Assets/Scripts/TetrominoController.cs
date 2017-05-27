@@ -113,7 +113,7 @@ public class TetrominoController : MonoBehaviour {
 			}
 		}
 		SetPosStr ();
-		Debug.Log (posStr);
+//		Debug.Log (posStr);
 		return posStr;
 	}
 
@@ -159,7 +159,7 @@ public class TetrominoController : MonoBehaviour {
 			}
 		}
 		SetPosStr ();
-		Debug.Log (posStr);
+//		Debug.Log (posStr);
 		return posStr;
 	}
 

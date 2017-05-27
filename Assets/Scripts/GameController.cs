@@ -87,26 +87,20 @@ public class GameController : NetworkBehaviour {
 					}
 				}
 			});	
-//			reference.ValueChanged += (object sender, ValueChangedEventArgs args) => {
-//				if (args.DatabaseError != null) {
-//					Debug.LogError (args.DatabaseError.Message);
-//					return;
-//				}
-//				// Do something with the data in args.Snapshot
-//				if (args.Snapshot.HasChild ("p1")) {
-//					myName = "p2";
-//				} else {
-//					myName = "p1";
-//				}
-//			};
 		} 
 	}
 		
 	// Update is called once per frame
 	void Update () {
+//		Debug.Log (myName + ":::");
+		if (isLocalPlayer) {
+			if (Input.GetKeyDown (KeyCode.O)) {
+				Debug.Log ("MyName: " + myName);
+			}
+		}
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
-//			CmdGameRunning (true);
+			CmdGameRunning (true);
 			StartGame ();
 			Debug.Log ("Game Running: " + gameRunning);
 		}
@@ -149,12 +143,15 @@ public class GameController : NetworkBehaviour {
 		// Time counter for tetromino to drop down
 		if (dropDelayCounter > 0) {
 			dropDelayCounter -= Time.deltaTime;
+//			Debug.Log (myName + ": " + dropDelayCounter);
 		}
 		else {
+			Debug.Log ("Time = 0");
 			if (isLocalPlayer) {
 				DropTetromino ();
 			}
 			else {
+				Debug.Log ("TTTTTTTT");
 				GetSyncStr ();
 			}
 		}
@@ -206,18 +203,24 @@ public class GameController : NetworkBehaviour {
 	}
 
 	private void GetSyncStr () {
+		Debug.Log ("----------------------");
+		Debug.Log (myName);
+		Debug.Log ("----------------------");
 		if (myName == "p1") {
+			Debug.Log ("P1 true");
 			reference.Child("p2").Child("block").GetValueAsync().ContinueWith(task => {
 	            if (task.IsFaulted) {
 	                    // Handle the error...
 	            }
 	        	else if (task.IsCompleted) {
+					Debug.Log ("P1 no error");
 	                DataSnapshot snapshot = task.Result;
 					networkBlocks = snapshot.Value.ToString();
 	            }
 	   		});	
 		} 
 		else {
+			Debug.Log ("!= p1");
 			reference.Child("p1").Child("block").GetValueAsync().ContinueWith(task => {
 				if (task.IsFaulted) {
 					// Handle the error...
@@ -449,7 +452,7 @@ public class GameController : NetworkBehaviour {
 		for (int i = blocks.GetLength (0) - 1; i >= 0; i--) {
 			int count = 0;
 			for (int j = 0; j < blocks.GetLength (1); j++) {
-				Debug.Log ("i: " + i + ", j: " + j);
+//				Debug.Log ("i: " + i + ", j: " + j);
 				if (blocks [i, j] > 0) {
 					count++;
 				}
