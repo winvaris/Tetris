@@ -13,6 +13,7 @@ public class StartGameController : MonoBehaviour {
 	public GameObject canvas;
 	public Text input;
 	public string enemy;
+	private bool started = false;
 
 	private DatabaseReference reference;
 
@@ -28,9 +29,10 @@ public class StartGameController : MonoBehaviour {
 				return;
 			}
 			if(args.Snapshot.HasChild(enemy)){
-				if(args.Snapshot.Child(enemy).Child("ready").Value.ToString() == "1" && args.Snapshot.Child(input.text.ToString()).Child("ready").Value.ToString()== "1"){
+				if(!started && args.Snapshot.Child(enemy).Child("ready").Value.ToString() == "1" && args.Snapshot.Child(input.text.ToString()).Child("ready").Value.ToString()== "1"){
 					mainBoard.gameObject.GetComponent<GameController> ().SetEnemy(enemy);
 					canvas.SetActive(false);
+					started = true;
 				}
 			}
 		};
