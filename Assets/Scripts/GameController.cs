@@ -93,9 +93,7 @@ public class GameController : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.Y) && !gameRunning) {
 			Debug.Log ("Y Pressed");
-//			CmdGameRunning (true);
 			StartGame ();
-			Debug.Log ("Game Running: " + gameRunning);
 		}
 
 		else if (Input.GetKeyDown (KeyCode.R)) {
@@ -134,11 +132,9 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
-
 		// Time counter for tetromino to drop down
 		if (dropDelayCounter > 0) {
 			dropDelayCounter -= Time.deltaTime;
-//			Debug.Log (myName + ": " + dropDelayCounter);
 		}
 		else {
 			DropTetromino ();
@@ -149,10 +145,6 @@ public class GameController : MonoBehaviour {
 		reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child (myName).Child("ready").SetValueAsync ("1");
 	}
-		
-	public void CmdGameRunning (bool value) {
-		gameRunning = value;
-	}
 
 	// Start the game
 	public void StartGame () {
@@ -160,7 +152,6 @@ public class GameController : MonoBehaviour {
 		SetTetrominoPosArray (tetromino.RandomTetromino (randomedTetrominos [0]));
 		RandomNextTetromino ();
 		UpdateBlocks ();
-		CmdGameRunning (true);
 		queue.SetQueueTetrominos (randomedTetrominos);
 	}
 
@@ -193,50 +184,6 @@ public class GameController : MonoBehaviour {
 				myBlock += blocks [i, j] + " ";
 			}
 		}
-	}
-
-	private void GetSyncStr () {
-		Debug.Log ("----------------------");
-		Debug.Log (myName);
-		Debug.Log ("----------------------");
-		if (myName == "p1") {
-			Debug.Log ("P1 true");
-			reference.Child("p2").Child("block").GetValueAsync().ContinueWith(task => {
-	            if (task.IsFaulted) {
-	                    // Handle the error...
-	            }
-	        	else if (task.IsCompleted) {
-					Debug.Log ("P1 no error");
-	                DataSnapshot snapshot = task.Result;
-					networkBlocks = snapshot.Value.ToString();
-	            }
-	   		});	
-		} 
-		else {
-			Debug.Log ("!= p1");
-			reference.Child("p1").Child("block").GetValueAsync().ContinueWith(task => {
-				if (task.IsFaulted) {
-					// Handle the error...
-				}
-				else if (task.IsCompleted) {
-					DataSnapshot snapshot = task.Result;
-					networkBlocks = snapshot.Value.ToString();
-				}
-			});	
-		}
-
-		string[] syncArray = networkBlocks.Split (' ');
-		for (int i = 0; i < blocks.GetLength (0); i++) {
-			for (int j = 0; j < blocks.GetLength (1); j++) {
-				if (syncArray.Length > 1) {
-					blocks [i, j] = int.Parse (syncArray [(i * 10) + j]);
-				}
-				else {
-					blocks [i, j] = 0;
-				}
-			}
-		}
-		UpdateBlocksState ();
 	}
 
 	// Initialize random tetrominoes
