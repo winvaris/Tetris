@@ -103,6 +103,9 @@ public class GameController : MonoBehaviour {
 			time -= Time.deltaTime;
 			SetTime ();
 		}
+		else {
+			TimesUp ();
+		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			RotateTetromino ();
@@ -139,6 +142,10 @@ public class GameController : MonoBehaviour {
 		else {
 			DropTetromino ();
 		}
+	}
+
+	public void TimesUp () {
+
 	}
 
 	public void SetTime () {
