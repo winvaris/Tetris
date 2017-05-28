@@ -46,6 +46,9 @@ public class GameController : MonoBehaviour {
 	public Text timeText;
 	private float time;
 	private int score;
+	private string escore;
+
+	public GameObject result;
 
 	// Use this for initialization
 	void Awake () {
@@ -76,6 +79,15 @@ public class GameController : MonoBehaviour {
 
 		// Get the root reference location of the database.
 		reference = FirebaseDatabase.DefaultInstance.RootReference;
+		reference.ValueChanged += (object sender, ValueChangedEventArgs args) => {
+			if (args.DatabaseError != null) {
+				Debug.LogError(args.DatabaseError.Message);
+				return;
+			}
+			if(args.Snapshot.Child(myEnemy).HasChild("score")){
+				escore = args.Snapshot.Child(myEnemy).Child("score").Value.ToString();
+			}
+		};
 	}
 
 	void Start() {
@@ -144,8 +156,13 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	public void TimesUp () {
+	public void RestartGame(){
+		Application.LoadLevel (Application.loadedLevel);
+	}
 
+	public void TimesUp () {
+		reference.Child (myName).Child("ready").SetValueAsync ("0");
+		result.gameObject.GetComponent<CanvasController> ().show (score.ToString(),escore);
 	}
 
 	public void SetTime () {
@@ -425,7 +442,7 @@ public class GameController : MonoBehaviour {
 				ClearRow (i);
 				i++;
 				score++;
-				Debug.Log ("Score: " + score);
+				reference.Child (myName).Child("score").SetValueAsync (score);
 			}
 		}
 		UpdateBlocksState ();

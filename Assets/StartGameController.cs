@@ -8,17 +8,20 @@ using Firebase.Database;
 using Firebase.Unity.Editor;
 
 public class StartGameController : MonoBehaviour {
-
+	
+	private Image myImage;
 	public GameObject mainBoard;
 	public GameObject canvas;
 	public Text input;
 	public string enemy;
 	private bool started = false;
-
+	public Sprite waiting;
 	private DatabaseReference reference;
 
 	// Use this for initialization
 	void Start () {
+
+		myImage = gameObject.GetComponent<Image> ();
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://tetris-a8118.firebaseio.com/");
 
 		// Get the root reference location of the database.
@@ -44,6 +47,7 @@ public class StartGameController : MonoBehaviour {
 	}
 
 	public void Ready(){
+		myImage.sprite (waiting);
 		mainBoard.gameObject.GetComponent<GameController> ().SetName(input.text.ToString());
 	}
 }
